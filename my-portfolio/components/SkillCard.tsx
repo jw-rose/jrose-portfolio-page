@@ -40,6 +40,7 @@ function getIconColor(skillName: string): string {
     'HTML': 'text-[#E34F26]',
     'CSS': 'text-[#1572B6]',
     'JavaScript': 'text-[#F7DF1E]',
+    'Typescript': 'text-[#F7DF1E]',
     'React': 'text-[#61DAFB]',
     'Next.js': 'text-gray-900 dark:text-[#F1F5F9]',
     'Tailwind CSS': 'text-[#06B6D4]',

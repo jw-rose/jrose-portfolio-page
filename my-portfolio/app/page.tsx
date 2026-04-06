@@ -11,11 +11,11 @@ export default function Home() {
         <div className="bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-8">
           <h2 className="text-gray-900 dark:text-[#F1F5F9] text-2xl font-medium mb-4">Who I am</h2>
           <p className="text-gray-600 dark:text-[#94A3B8] leading-relaxed">
-            I'm a passionate full stack developer with expertise in building dynamic, 
-            user-friendly web applications. With a strong foundation in both frontend 
-            and backend technologies, I thrive on creating seamless digital experiences. 
-            From crafting beautiful interfaces with React and Tailwind to building robust 
-            APIs with Node.js and Express, I bring ideas to life with clean, maintainable code.
+          Hi! I'm Josh and I am currently studying to be a Fullstack Web Developer. I spent ten years 
+teaching in some of the most prestigious universities and Business Schools in France. Today I 
+really enjoy the creative process of building applications, bringing my years of experience in 
+organisation and leadership, and a natural sense of curiosity. I am looking for an internship 
+to help consolidate my knowledge and offering a proactive approach.
           </p>
         </div>
       </section>
