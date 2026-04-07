@@ -96,7 +96,7 @@ export default function Navbar() {
               
               {/* FIXED: Added <a> */}
               <a
-                href="/Joshua-Rose-cv.pdf"
+                href="/CV-Joshua-Rose-FR.pdf"
                 download
                 className="bg-[#06B6D4] text-white dark:text-[#0F172A] px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#0891b2] transition-colors flex items-center justify-center gap-2 w-full"
               >

@@ -13,11 +13,11 @@ export default function Home() {
             Who I am
           </h2>
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base">
-            I'm a passionate full stack developer with expertise in building dynamic, 
-            user-friendly web applications. With a strong foundation in both frontend 
-            and backend technologies, I thrive on creating seamless digital experiences. 
-            From crafting beautiful interfaces with React and Tailwind to building robust 
-            APIs with Node.js and Express, I bring ideas to life with clean, maintainable code.
+            Hi! I'm Josh and I am currently studying to be a Fullstack Web Developer. I spent ten years 
+teaching in some of the most prestigious universities and Business Schools in France. Today I 
+really enjoy the creative process of building applications, bringing my years of experience in 
+organisation and leadership, and a natural sense of curiosity. I am looking for an internship 
+to help consolidate my knowledge and offering a proactive approach.
           </p>
         </div>
       </section>
