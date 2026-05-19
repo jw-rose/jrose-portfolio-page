@@ -33,12 +33,12 @@ export const projects: Project[] = [
   },
     {
     id: '4',
-    title: 'In Development - Party App - Main School Project - RNCP 6',
+    title: 'Party Up - RNCP 6',
     description: 'Personal Events management app to include messaging, photoupload and AI suggestion feature.',
     image: '/images/projects/party.jpg',
-    technologies: ['React', 'API', 'Chart.js', 'Tailwind'],
-    liveUrl: '',
-    githubUrl: '',
+    technologies: ['Next.js', 'Drizzle', 'Better Auth', 'Tailwind'],
+    liveUrl: 'https://www.party-up.app/login',
+    githubUrl: 'https://github.com/jw-rose/Party-Time',
     gradient: 'linear-gradient(135deg, #F59E0B 0%, #EF4444 100%)',
   },
   
