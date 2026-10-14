@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import { Project } from '@/types/project';
+import { useLanguage } from './LanguageProvider';
 
 function getHost(url: string) {
   try {
@@ -53,7 +56,9 @@ interface ProjectRowProps {
 }
 
 export default function ProjectRow({ project, index, total }: ProjectRowProps) {
+  const { t } = useLanguage();
   const host = getHost(project.liveUrl);
+  const description = t.work.projects[project.id as keyof typeof t.work.projects]?.description;
 
   return (
     <article className="flex flex-wrap gap-[clamp(24px,4vw,64px)] py-[clamp(32px,4vw,56px)] border-t border-hairline">
@@ -65,18 +70,18 @@ export default function ProjectRow({ project, index, total }: ProjectRowProps) {
           {project.title}
         </h3>
         <p className="text-[17px] leading-[1.55] text-[#B4B4AD] max-w-[420px] [text-wrap:pretty]">
-          {project.description}
+          {description}
         </p>
         <Tags technologies={project.technologies} />
         <div className="flex gap-6 mt-auto pt-3">
           <ProjectLink href={project.liveUrl} borderColorClass="border-lime">
-            Live demo
+            {t.work.liveDemo}
           </ProjectLink>
           <ProjectLink
             href={project.githubUrl}
             borderColorClass="border-[rgba(245,245,240,0.30)]"
           >
-            GitHub
+            {t.work.github}
           </ProjectLink>
         </div>
       </div>
@@ -93,7 +98,7 @@ export default function ProjectRow({ project, index, total }: ProjectRowProps) {
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
             src={project.image}
-            alt={`${project.title} — screenshot`}
+            alt={`${project.title} ${t.work.screenshotAltSuffix}`}
             fill
             sizes="(min-width: 1024px) 55vw, 90vw"
             priority={index === 0}
