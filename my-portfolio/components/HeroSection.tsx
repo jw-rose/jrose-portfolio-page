@@ -12,7 +12,7 @@ export default function HeroSection() {
           </p>
 
           <h1
-            className="font-display font-semibold tracking-tight text-paper mb-6"
+            className="font-display font-semibold tracking-tight text-paper mb-6 break-words"
             style={{ fontSize: 'clamp(3.25rem, 9vw, 9.125rem)', lineHeight: 0.9 }}
           >
             <span className="block">
