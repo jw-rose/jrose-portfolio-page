@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 import { CONTACT_EMAIL } from '@/lib/contactConfig';
+import { useLanguage } from './LanguageProvider';
+import type { Dictionary } from '@/locales/en';
 
 interface FormData {
   name: string;
@@ -20,20 +22,20 @@ const initialFormData: FormData = { name: '', email: '', message: '', company: '
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
-function validate(data: FormData): FormErrors {
+function validate(data: FormData, errorMessages: Dictionary['contactForm']['errors']): FormErrors {
   const errors: FormErrors = {};
 
   if (!data.name.trim()) {
-    errors.name = 'Enter your name.';
+    errors.name = errorMessages.name;
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(data.email.trim())) {
-    errors.email = 'Enter a valid email address.';
+    errors.email = errorMessages.email;
   }
 
   if (data.message.trim().length < 10) {
-    errors.message = 'Message should be at least 10 characters.';
+    errors.message = errorMessages.message;
   }
 
   return errors;
@@ -47,6 +49,7 @@ function fieldBorderClass(hasError: boolean) {
 }
 
 export default function ContactForm() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<Status>('idle');
@@ -65,7 +68,7 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validationErrors = validate(formData);
+    const validationErrors = validate(formData, t.contactForm.errors);
     setErrors(validationErrors);
 
     if (validationErrors.name) {
@@ -105,7 +108,7 @@ export default function ContactForm() {
   return (
     <div className="flex-1 basis-[420px] rounded-arch border border-hairline bg-[#141414] p-[clamp(24px,3vw,40px)]">
       <h2 className="font-display font-semibold text-[22px] text-paper mb-[22px]">
-        Send a note
+        {t.contactForm.heading}
       </h2>
 
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-[22px]">
@@ -131,7 +134,7 @@ export default function ContactForm() {
             htmlFor="contact-name"
             className="block font-mono text-[11px] uppercase tracking-[0.06em] text-muted2 mb-2"
           >
-            Name
+            {t.contactForm.nameLabel}
           </label>
           <input
             ref={nameRef}
@@ -140,7 +143,7 @@ export default function ContactForm() {
             type="text"
             autoComplete="name"
             maxLength={80}
-            placeholder="Your name"
+            placeholder={t.contactForm.namePlaceholder}
             value={formData.name}
             onChange={handleChange}
             aria-invalid={Boolean(errors.name)}
@@ -159,7 +162,7 @@ export default function ContactForm() {
             htmlFor="contact-email"
             className="block font-mono text-[11px] uppercase tracking-[0.06em] text-muted2 mb-2"
           >
-            Email
+            {t.contactForm.emailLabel}
           </label>
           <input
             ref={emailRef}
@@ -168,7 +171,7 @@ export default function ContactForm() {
             type="email"
             autoComplete="email"
             maxLength={120}
-            placeholder="you@company.com"
+            placeholder={t.contactForm.emailPlaceholder}
             value={formData.email}
             onChange={handleChange}
             aria-invalid={Boolean(errors.email)}
@@ -187,7 +190,7 @@ export default function ContactForm() {
             htmlFor="contact-message"
             className="block font-mono text-[11px] uppercase tracking-[0.06em] text-muted2 mb-2"
           >
-            Message
+            {t.contactForm.messageLabel}
           </label>
           <textarea
             ref={messageRef}
@@ -195,7 +198,7 @@ export default function ContactForm() {
             name="message"
             rows={4}
             maxLength={2000}
-            placeholder="A role, a project, an idea…"
+            placeholder={t.contactForm.messagePlaceholder}
             value={formData.message}
             onChange={handleChange}
             aria-invalid={Boolean(errors.message)}
@@ -215,7 +218,7 @@ export default function ContactForm() {
             aria-live="polite"
             className="rounded-[14px] border border-[rgba(199,255,101,0.4)] bg-[rgba(199,255,101,0.08)] px-4 py-3 text-sm text-[#E4FFB4]"
           >
-            Thanks, your message has been sent. I&apos;ll reply as soon as I can.
+            {t.contactForm.successMessage}
           </div>
         )}
 
@@ -224,7 +227,7 @@ export default function ContactForm() {
             role="alert"
             className="rounded-[14px] border border-[oklch(0.78_0.14_35/0.4)] bg-[oklch(0.78_0.14_35/0.08)] px-4 py-3 text-sm text-[oklch(0.88_0.08_35)]"
           >
-            Something went wrong. Please try again or email me directly at{' '}
+            {t.contactForm.errorMessagePrefix}{' '}
             <a href={`mailto:${CONTACT_EMAIL}`} className="underline hover:text-paper">
               {CONTACT_EMAIL}
             </a>
@@ -238,9 +241,9 @@ export default function ContactForm() {
           aria-busy={status === 'sending'}
           className="inline-flex items-center justify-center gap-2 h-[52px] px-6 self-start rounded-full bg-lime font-display font-semibold text-[16px] text-ink transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {status === 'sending' ? 'Sending…' : (
+          {status === 'sending' ? t.contactForm.sending : (
             <>
-              Send <span aria-hidden="true">→</span>
+              {t.contactForm.submit} <span aria-hidden="true">→</span>
             </>
           )}
         </button>
