@@ -1,12 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { timeline } from '@/lib/cvData';
-import type { TimelineEntry } from '@/types/cv';
+import { timelineStructure, type TimelineStructureEntry } from '@/lib/cvData';
+import { projects } from '@/lib/projectsData';
+import { useLanguage } from '../LanguageProvider';
+import type { Dictionary } from '@/locales/en';
 
-const allIds = timeline.map((entry) => entry.id);
-const defaultOpenIds = timeline.filter((entry) => entry.defaultOpen).map((entry) => entry.id);
-const initialStage = timeline.find((entry) => entry.defaultOpen)?.id ?? allIds[0];
+function liveUrlForTitle(title: string): string | undefined {
+  return projects.find((p) => p.title === title)?.liveUrl;
+}
+
+const allIds = timelineStructure.map((entry) => entry.id);
+const defaultOpenIds = timelineStructure.filter((entry) => entry.defaultOpen).map((entry) => entry.id);
+const initialStage = timelineStructure.find((entry) => entry.defaultOpen)?.id ?? allIds[0];
 
 function MonogramTile({ letter }: { letter: string }) {
   return (
@@ -20,20 +26,35 @@ function MonogramTile({ letter }: { letter: string }) {
 }
 
 function AccordionPanel({
-  entry,
+  structure,
+  text,
+  t,
   isOpen,
   onToggle,
 }: {
-  entry: TimelineEntry;
+  structure: TimelineStructureEntry;
+  text: Dictionary['cvPage']['timeline'][TimelineStructureEntry['id']];
+  t: Dictionary;
   isOpen: boolean;
   onToggle: () => void;
 }) {
-  const headerId = `timeline-${entry.id}-header`;
-  const panelId = `timeline-${entry.id}-panel`;
+  const headerId = `timeline-${structure.id}-header`;
+  const panelId = `timeline-${structure.id}-panel`;
+
+  const dates = 'dates' in text ? text.dates : undefined;
+  const role = 'role' in text ? text.role : undefined;
+  const location = 'location' in text ? text.location : undefined;
+  const statusNote = 'statusNote' in text ? text.statusNote : undefined;
+  const whatIDid = 'whatIDid' in text ? text.whatIDid : undefined;
+  const subjects = 'subjects' in text ? text.subjects : undefined;
+  const evidenceLabel = 'evidenceLabel' in text ? text.evidenceLabel : undefined;
+  const evidenceNote = 'evidenceNote' in text ? text.evidenceNote : undefined;
+  const extraLine = 'extraLine' in text ? text.extraLine : undefined;
+  const teachingRolesText = 'teachingRoles' in text ? text.teachingRoles : undefined;
 
   return (
     <div
-      id={`timeline-${entry.id}`}
+      id={`timeline-${structure.id}`}
       className="border-t border-hairline print:break-inside-avoid"
     >
       <button
@@ -44,14 +65,12 @@ function AccordionPanel({
         onClick={onToggle}
         className="w-full flex items-center gap-4 py-6 min-h-[44px] text-left"
       >
-        <MonogramTile letter={entry.monogram} />
+        <MonogramTile letter={structure.monogram} />
         <span className="flex-1">
           <span className="block font-display font-semibold text-xl sm:text-2xl text-paper">
-            {entry.heading}
+            {text.heading}
           </span>
-          {entry.dates && (
-            <span className="block font-mono text-xs text-muted2 mt-1">{entry.dates}</span>
-          )}
+          {dates && <span className="block font-mono text-xs text-muted2 mt-1">{dates}</span>}
         </span>
         <span
           aria-hidden="true"
@@ -71,92 +90,96 @@ function AccordionPanel({
         className="cv-accordion-content grid overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out"
       >
         <div className="overflow-hidden min-h-0 pb-8 pl-0 sm:pl-[60px] flex flex-col gap-4 max-w-[640px]">
-          {(entry.role || entry.org || entry.orgLink || entry.location) && (
+          {(role || structure.org || structure.orgLink || location) && (
             <p className="text-[17px] text-body leading-relaxed">
-              {entry.role}
-              {entry.role && (entry.org || entry.orgLink) && ' · '}
-              {entry.orgLink ? (
+              {role}
+              {role && (structure.org || structure.orgLink) && ' · '}
+              {structure.orgLink ? (
                 <a
-                  href={entry.orgLink.href}
+                  href={structure.orgLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-lime hover:text-paper transition-colors"
                 >
-                  {entry.orgLink.label}
+                  {structure.orgLink.label}
                 </a>
               ) : (
-                entry.org
+                structure.org
               )}
-              {entry.location && ` · ${entry.location}`}
+              {location && ` · ${location}`}
             </p>
           )}
 
-          {entry.statusNote && (
+          {statusNote && (
             <span className="inline-flex items-center self-start font-mono text-xs uppercase tracking-wider text-lime border border-[rgba(199,255,101,.45)] bg-[rgba(199,255,101,.06)] rounded-full px-3 py-1.5">
-              {entry.statusNote}
+              {statusNote}
             </span>
           )}
 
-          {entry.whatIDid && (
+          {whatIDid && (
             <div>
               <p className="font-mono text-xs uppercase tracking-wider text-muted2 mb-2">
-                What I did
+                {t.cvPage.whatIDidLabel}
               </p>
               <ul className="list-disc pl-5 flex flex-col gap-1.5 text-[17px] text-body leading-relaxed">
-                {entry.whatIDid.map((line) => (
+                {whatIDid.map((line) => (
                   <li key={line}>{line}</li>
                 ))}
               </ul>
             </div>
           )}
 
-          {entry.teachingRoles && (
+          {teachingRolesText && structure.teachingOrgOrder && (
             <ul className="flex flex-col gap-4">
-              {entry.teachingRoles.map((role) => (
-                <li key={role.org}>
-                  <p className="font-display font-medium text-paper">
-                    {role.org} <span className="font-mono text-xs text-muted2">{role.dates}</span>
-                  </p>
-                  <p className="text-[17px] text-body leading-relaxed">{role.detail}</p>
-                </li>
-              ))}
+              {structure.teachingOrgOrder.map((orgKey) => {
+                const roleText = teachingRolesText[orgKey as keyof typeof teachingRolesText];
+                const orgName = structure.teachingOrgs?.[orgKey];
+                return (
+                  <li key={orgKey}>
+                    <p className="font-display font-medium text-paper">
+                      {orgName} <span className="font-mono text-xs text-muted2">{roleText.dates}</span>
+                    </p>
+                    <p className="text-[17px] text-body leading-relaxed">{roleText.detail}</p>
+                  </li>
+                );
+              })}
             </ul>
           )}
 
-          {entry.subjects && (
+          {subjects && (
             <p className="font-mono text-xs uppercase tracking-wider text-muted2">
-              Subjects: {entry.subjects}
+              {t.cvPage.subjectsLabel}: {subjects}
             </p>
           )}
 
-          {entry.evidenceProjects && (
+          {structure.evidenceProjectTitles && (
             <div>
               <p className="font-mono text-xs uppercase tracking-wider text-muted2 mb-2">
-                {entry.evidenceLabel}
+                {evidenceLabel}
               </p>
               <ul className="flex flex-col gap-2">
-                {entry.evidenceProjects.map((project) => (
-                  <li key={project.project} className="flex flex-wrap items-baseline gap-3">
-                    <span className="text-[17px] text-paper">{project.project}</span>
-                    {project.links.map((link) => (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        className="inline-flex items-center gap-1 font-display text-sm text-lime hover:text-paper transition-colors"
-                      >
-                        {link.label} <span aria-hidden="true">→</span>
-                      </a>
-                    ))}
-                  </li>
-                ))}
+                {structure.evidenceProjectTitles.map((title) => {
+                  const liveUrl = liveUrlForTitle(title);
+                  return (
+                    <li key={title} className="flex flex-wrap items-baseline gap-3">
+                      <span className="text-[17px] text-paper">{title}</span>
+                      {liveUrl && (
+                        <a
+                          href={liveUrl}
+                          className="inline-flex items-center gap-1 font-display text-sm text-lime hover:text-paper transition-colors"
+                        >
+                          {t.work.liveDemo} <span aria-hidden="true">→</span>
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
-              {entry.evidenceNote && (
-                <p className="text-sm text-muted mt-2">{entry.evidenceNote}</p>
-              )}
+              {evidenceNote && <p className="text-sm text-muted mt-2">{evidenceNote}</p>}
             </div>
           )}
 
-          {entry.extraLine && <p className="text-sm text-muted">{entry.extraLine}</p>}
+          {extraLine && <p className="text-sm text-muted">{extraLine}</p>}
         </div>
       </div>
     </div>
@@ -164,6 +187,7 @@ function AccordionPanel({
 }
 
 export default function CareerTimeline() {
+  const { t } = useLanguage();
   const [openIds, setOpenIds] = useState<Set<string>>(new Set(defaultOpenIds));
   const [selectedStage, setSelectedStage] = useState<string>(initialStage);
 
@@ -209,12 +233,13 @@ export default function CareerTimeline() {
       </noscript>
       <div className="mb-10">
         <p className="font-mono uppercase text-xs tracking-wider text-muted2 mb-1">
-          Career at a glance
+          {t.cvPage.timelineLabel}
         </p>
-        <p className="text-sm text-muted mb-4">Select a stage to open it</p>
+        <p className="text-sm text-muted mb-4">{t.cvPage.timelineHint}</p>
         <div className="flex flex-wrap gap-3 print:hidden">
-          {timeline.map((entry) => {
+          {timelineStructure.map((entry) => {
             const isSelected = selectedStage === entry.id;
+            const text = t.cvPage.timeline[entry.id];
             return (
               <button
                 key={entry.id}
@@ -230,7 +255,7 @@ export default function CareerTimeline() {
                 {entry.liveDot && (
                   <span className="w-1.5 h-1.5 rounded-full bg-lime" aria-hidden="true" />
                 )}
-                {entry.stageLabel}
+                {text.stageLabel}
               </button>
             );
           })}
@@ -238,21 +263,23 @@ export default function CareerTimeline() {
       </div>
 
       <div className="flex items-center justify-between mb-2 print:hidden">
-        <h2 className="font-display font-semibold text-2xl text-paper">Timeline</h2>
+        <h2 className="font-display font-semibold text-2xl text-paper">{t.cvPage.timelineHeading}</h2>
         <button
           type="button"
           onClick={toggleAll}
           className="font-mono text-xs uppercase tracking-wider text-muted hover:text-paper transition-colors min-h-[44px] px-2"
         >
-          {allOpen ? 'Collapse' : 'Expand all'}
+          {allOpen ? t.cvPage.collapse : t.cvPage.expandAll}
         </button>
       </div>
 
       <div>
-        {timeline.map((entry) => (
+        {timelineStructure.map((entry) => (
           <AccordionPanel
             key={entry.id}
-            entry={entry}
+            structure={entry}
+            text={t.cvPage.timeline[entry.id]}
+            t={t}
             isOpen={openIds.has(entry.id)}
             onToggle={() => togglePanel(entry.id)}
           />

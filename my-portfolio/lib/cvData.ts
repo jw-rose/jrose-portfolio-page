@@ -1,149 +1,93 @@
 import { projects } from '@/lib/projectsData';
-import type {
-  ProfileFact,
-  TimelineEntry,
-  Strength,
-  SkillGroup,
-  EvidenceProject,
-} from '@/types/cv';
 
-const projectByTitle = (title: string) => {
+function projectByTitle(title: string) {
   const project = projects.find((p) => p.title === title);
   if (!project) throw new Error(`cvData: unknown project "${title}"`);
   return project;
-};
-
-function caseStudyEvidence(title: string): EvidenceProject {
-  const project = projectByTitle(title);
-  return {
-    project: title,
-    links: [{ label: 'Live demo', href: project.liveUrl }],
-  };
 }
 
-const QUE_FAIRE_A_PARIS: EvidenceProject = {
-  project: 'Que faire à Paris ?',
-  links: [
-    { label: 'Live demo', href: 'https://paris-events-wheat.vercel.app' },
-    { label: 'GitHub', href: 'https://github.com/jw-rose/Paris-Events' },
-  ],
-};
+function projectLiveUrl(title: string): string {
+  return projectByTitle(title).liveUrl;
+}
 
-export const profileFacts: ProfileFact[] = [
-  { label: 'Name', value: 'Joshua Rose' },
-  { label: 'Role', value: 'Full-stack web developer' },
-  { label: 'Based in', value: 'Paris, France' },
-  { label: 'Languages', value: 'English (native), French (C1)' },
-  { label: 'Teaching', value: '10 years, France' },
-];
+// Profile facts: the order the labels/values are rendered in. Labels and
+// values are translated copy, kept in locales/{en,fr}.ts under cvPage.profileFacts.
+export const profileFactKeys = ['name', 'role', 'basedIn', 'languages', 'teaching'] as const;
 
-export const timeline: TimelineEntry[] = [
+interface TimelineLinkRef {
+  label: string;
+  href: string;
+}
+
+export interface TimelineStructureEntry {
+  id: 'hypto' | 'training' | 'teaching';
+  monogram: string;
+  liveDot?: boolean;
+  orgLink?: TimelineLinkRef;
+  org?: string;
+  defaultOpen: boolean;
+  evidenceProjectTitles?: string[];
+  teachingOrgOrder?: string[];
+  // Organisation names are proper nouns and are not translated.
+  teachingOrgs?: Record<string, string>;
+}
+
+// Structural/non-text timeline data. Translated copy (heading, role, dates,
+// whatIDid, teachingRoles details, statusNote, evidenceNote, extraLine, ...)
+// lives in locales/{en,fr}.ts under cvPage.timeline, keyed by the same ids.
+export const timelineStructure: TimelineStructureEntry[] = [
   {
     id: 'hypto',
-    stageLabel: 'Hypto',
     monogram: 'H',
     liveDot: true,
-    heading: 'Hypto (Professional)',
     orgLink: { label: 'hyptopro.fr', href: 'https://hyptopro.fr' },
-    role: 'Full-stack Developer',
-    location: 'Paris',
-    dates: 'June to July 2026',
-    whatIDid: [
-      'Built KPI dashboards and multi-tenant RBAC for a construction-industry SaaS.',
-      'Built the cross-tenant interface and roles.',
-      'Wrote code documentation.',
-    ],
     defaultOpen: true,
   },
   {
     id: 'training',
-    stageLabel: 'Training',
     monogram: 'A',
-    heading: 'Training',
-    role: "Concepteur développeur d'applications (RNCP Level 6)",
     org: 'Ada Tech School',
-    dates: 'September 2025 to October 2026',
-    statusNote: 'RNCP 6, validated',
-    evidenceLabel: 'Projects built — evidence',
-    evidenceProjects: [
-      caseStudyEvidence('Personality Page'),
-      caseStudyEvidence('Task Management App'),
-      caseStudyEvidence('Social Post'),
-      caseStudyEvidence('Party Up'),
-    ],
-    evidenceNote: 'Party Up is the RNCP 6 certification project.',
-    extraLine:
-      'Earlier: University of Plymouth, 2008-2012 — BA Modern Foreign Languages with Business Studies.',
     defaultOpen: false,
+    evidenceProjectTitles: ['Personality Page', 'Task Management App', 'Social Post', 'Party Up'],
   },
   {
     id: 'teaching',
-    stageLabel: 'Teaching',
     monogram: 'T',
-    heading: 'Teaching',
-    role: 'English teacher, universities and business schools, France',
-    teachingRoles: [
-      {
-        dates: '2022 to 2026',
-        org: 'ICP, Paris',
-        detail: 'Designed a digital curriculum on Moodle.',
-      },
-      {
-        dates: '2019 to 2022',
-        org: 'ISTC, Lille',
-        detail: 'Led student multimedia projects; managed schedules and deliverables.',
-      },
-    ],
-    subjects: 'English',
     defaultOpen: false,
+    teachingOrgOrder: ['icp', 'istc'],
+    teachingOrgs: { icp: 'ICP, Paris', istc: 'ISTC, Lille' },
   },
 ];
 
-export const strengths: Strength[] = [
-  {
-    number: '01',
-    title: 'Communication',
-    body: 'Explaining decisions clearly to teammates, clients and non-technical people.',
-  },
-  {
-    number: '02',
-    title: 'Structured thinking',
-    body: 'Breaking a large subject into ordered, manageable parts.',
-  },
-  {
-    number: '03',
-    title: 'Organisation & leadership',
-    body: 'Planning, running and owning work across a full academic year.',
-  },
-  {
-    number: '04',
-    title: 'Explaining complex ideas',
-    body: 'Turning difficult material into something people can follow and use.',
-  },
-];
+// Strengths: render order. Title/body copy lives in locales/{en,fr}.ts under cvPage.strengths.
+export const strengthKeys = ['communication', 'structuredThinking', 'organisation', 'explaining'] as const;
 
-export const skillGroups: SkillGroup[] = [
+export interface SkillGroupStructure {
+  id: 'frontend' | 'backendData' | 'authEmailTesting' | 'alsoOnCv';
+  clickable: boolean;
+  skills: string[];
+}
+
+// Skill group labels live in locales/{en,fr}.ts under cvPage.skillGroups; the
+// skill names themselves are technology names and are never translated.
+export const skillGroupsStructure: SkillGroupStructure[] = [
   {
     id: 'frontend',
-    label: 'Frontend',
     clickable: true,
     skills: ['JavaScript', 'TypeScript', 'React', 'React Router', 'Next.js', 'Tailwind CSS'],
   },
   {
-    id: 'backend-data',
-    label: 'Backend & data',
+    id: 'backendData',
     clickable: true,
     skills: ['Node.js', 'MongoDB', 'Drizzle ORM', 'Socket.io'],
   },
   {
-    id: 'auth-email-testing',
-    label: 'Auth, email & testing',
+    id: 'authEmailTesting',
     clickable: true,
     skills: ['Better Auth', 'Resend', 'Vitest', 'Playwright'],
   },
   {
-    id: 'also-on-cv',
-    label: 'Also on my CV (no project linked yet)',
+    id: 'alsoOnCv',
     clickable: false,
     skills: [
       'Express',
@@ -161,40 +105,55 @@ export const skillGroups: SkillGroup[] = [
   },
 ];
 
+export const defaultSkill = 'Next.js';
+
+export interface EvidenceProjectRef {
+  project: string;
+  liveUrl?: string;
+  githubUrl?: string;
+}
+
+const QUE_FAIRE_A_PARIS = {
+  project: 'Que faire à Paris ?',
+  liveUrl: 'https://paris-events-wheat.vercel.app',
+  githubUrl: 'https://github.com/jw-rose/Paris-Events',
+};
+
 /**
  * Skill -> projects that prove it. Hand-written from the explicit map in the
  * brief (not inferred) — a skill not listed here simply has no evidence yet,
  * even if it's a clickable chip (see Node.js).
  */
-export const skillEvidence: Record<string, EvidenceProject[]> = {
+export const skillEvidence: Record<string, EvidenceProjectRef[]> = {
   JavaScript: [
-    caseStudyEvidence('Personality Page'),
-    caseStudyEvidence('Task Management App'),
-    caseStudyEvidence('Social Post'),
-    caseStudyEvidence('Party Up'),
+    { project: 'Personality Page', liveUrl: projectLiveUrl('Personality Page') },
+    { project: 'Task Management App', liveUrl: projectLiveUrl('Task Management App') },
+    { project: 'Social Post', liveUrl: projectLiveUrl('Social Post') },
+    { project: 'Party Up', liveUrl: projectLiveUrl('Party Up') },
     QUE_FAIRE_A_PARIS,
   ],
-  TypeScript: [caseStudyEvidence('Personality Page')],
-  React: [caseStudyEvidence('Personality Page')],
-  'React Router': [caseStudyEvidence('Personality Page')],
+  TypeScript: [{ project: 'Personality Page', liveUrl: projectLiveUrl('Personality Page') }],
+  React: [{ project: 'Personality Page', liveUrl: projectLiveUrl('Personality Page') }],
+  'React Router': [{ project: 'Personality Page', liveUrl: projectLiveUrl('Personality Page') }],
   'Next.js': [
-    caseStudyEvidence('Task Management App'),
-    caseStudyEvidence('Social Post'),
-    caseStudyEvidence('Party Up'),
+    { project: 'Task Management App', liveUrl: projectLiveUrl('Task Management App') },
+    { project: 'Social Post', liveUrl: projectLiveUrl('Social Post') },
+    { project: 'Party Up', liveUrl: projectLiveUrl('Party Up') },
   ],
   'Tailwind CSS': [
-    caseStudyEvidence('Personality Page'),
-    caseStudyEvidence('Task Management App'),
-    caseStudyEvidence('Social Post'),
-    caseStudyEvidence('Party Up'),
+    { project: 'Personality Page', liveUrl: projectLiveUrl('Personality Page') },
+    { project: 'Task Management App', liveUrl: projectLiveUrl('Task Management App') },
+    { project: 'Social Post', liveUrl: projectLiveUrl('Social Post') },
+    { project: 'Party Up', liveUrl: projectLiveUrl('Party Up') },
   ],
-  MongoDB: [caseStudyEvidence('Task Management App')],
-  'Drizzle ORM': [caseStudyEvidence('Party Up')],
-  'Socket.io': [caseStudyEvidence('Task Management App')],
-  'Better Auth': [caseStudyEvidence('Social Post'), caseStudyEvidence('Party Up')],
-  Resend: [caseStudyEvidence('Social Post')],
-  Vitest: [caseStudyEvidence('Party Up')],
-  Playwright: [caseStudyEvidence('Party Up')],
+  MongoDB: [{ project: 'Task Management App', liveUrl: projectLiveUrl('Task Management App') }],
+  'Drizzle ORM': [{ project: 'Party Up', liveUrl: projectLiveUrl('Party Up') }],
+  'Socket.io': [{ project: 'Task Management App', liveUrl: projectLiveUrl('Task Management App') }],
+  'Better Auth': [
+    { project: 'Social Post', liveUrl: projectLiveUrl('Social Post') },
+    { project: 'Party Up', liveUrl: projectLiveUrl('Party Up') },
+  ],
+  Resend: [{ project: 'Social Post', liveUrl: projectLiveUrl('Social Post') }],
+  Vitest: [{ project: 'Party Up', liveUrl: projectLiveUrl('Party Up') }],
+  Playwright: [{ project: 'Party Up', liveUrl: projectLiveUrl('Party Up') }],
 };
-
-export const defaultSkill = 'Next.js';

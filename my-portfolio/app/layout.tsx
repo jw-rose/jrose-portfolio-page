@@ -4,6 +4,8 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { LanguageProvider } from '@/components/LanguageProvider';
+import SkipToContentLink from '@/components/SkipToContentLink';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -43,17 +45,14 @@ export default function RootLayout({
     >
       <body className="font-body bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
         <ThemeProvider>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-lime focus:px-4 focus:py-2 focus:text-ink focus:font-medium"
-          >
-            Skip to content
-          </a>
-          <Navbar />
-          <main id="main-content" className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
+          <LanguageProvider>
+            <SkipToContentLink />
+            <Navbar />
+            <main id="main-content" className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

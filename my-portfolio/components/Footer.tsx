@@ -1,4 +1,9 @@
+'use client';
+
+import { useLanguage } from './LanguageProvider';
+
 export default function Footer() {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -18,7 +23,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="min-h-[44px] inline-flex items-center hover:text-paper transition-colors"
           >
-            GitHub <span aria-hidden="true" className="ml-1">↗</span>
+            {t.footer.github} <span aria-hidden="true" className="ml-1">↗</span>
           </a>
           <a
             href="https://www.linkedin.com/in/josh-rose-4b715b32/"
@@ -26,7 +31,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="min-h-[44px] inline-flex items-center hover:text-paper transition-colors"
           >
-            LinkedIn <span aria-hidden="true" className="ml-1">↗</span>
+            {t.footer.linkedin} <span aria-hidden="true" className="ml-1">↗</span>
           </a>
           <a
             href="https://www.devjrose.com/CV-Joshua-Rose-FR.pdf"
@@ -34,7 +39,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="min-h-[44px] inline-flex items-center text-lime hover:text-paper transition-colors"
           >
-            CV <span aria-hidden="true" className="ml-1">→</span>
+            {t.footer.cv} <span aria-hidden="true" className="ml-1">→</span>
           </a>
         </div>
       </div>
