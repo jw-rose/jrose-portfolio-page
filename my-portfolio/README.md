@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# my-portfolio
 
-## Getting Started
+Source for the portfolio site at devjrose.com.
 
-First, run the development server:
+## Tech stack
+
+- [Next.js](https://nextjs.org) 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 3
+- [next-themes](https://github.com/pacocoursey/next-themes) for dark/light mode
+- [Resend](https://resend.com) for the contact form's outbound email
+- [Framer Motion](https://www.framer.com/motion/) and [react-icons](https://react-icons.github.io/react-icons/)
+
+## Getting started
+
+Install dependencies and run the dev server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run start   # run the production build
+npm run lint    # eslint
+```
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+Copy `.env.example` to `.env.local` and fill in the value:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Used for |
+|---|---|
+| `RESEND_API_KEY` | Sends the contact form email via Resend (`lib/resend.ts`, `app/api/send-email/route.ts`) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/                  App Router routes
+  api/send-email/     Contact form API route
+  contact/            Contact page
+  skills/             Skills page
+  layout.tsx          Root layout
+  page.tsx            Home page
+components/           Shared React components
+lib/                  Data files (projects, skills) and the Resend client
+types/                Shared TypeScript types
+public/               Static assets (CV, project screenshots)
+```

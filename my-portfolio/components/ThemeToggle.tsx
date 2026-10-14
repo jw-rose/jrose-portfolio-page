@@ -18,14 +18,10 @@ export default function ThemeToggle() {
     );
   }
 
-  // Debug: Log theme changes
-  console.log('Current theme:', theme);
-
   return (
     <button
       onClick={() => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
-        console.log('Switching to:', newTheme);
         setTheme(newTheme);
       }}
       className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
