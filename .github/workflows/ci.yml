@@ -32,6 +32,8 @@ jobs:
         continue-on-error: true   # remove once lint errors are fixed
       - run: npx tsc --noEmit
       - run: npm run build
+        env:
+          RESEND_API_KEY: "dummy-for-build"
       - name: Dependency audit (non-blocking for now)
         run: npm audit --audit-level=critical
         continue-on-error: true
