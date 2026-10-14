@@ -69,7 +69,7 @@ export default function TechnicalProfile() {
                       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                       className="inline-flex items-center gap-1 font-display text-sm text-lime hover:text-paper transition-colors"
                     >
-                      {link.label === 'Case study' ? 'Case study' : link.label}{' '}
+                      {link.label}{' '}
                       <span aria-hidden="true">{isExternal ? '↗' : '→'}</span>
                     </a>
                   );

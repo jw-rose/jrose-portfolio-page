@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { projects } from '@/lib/projectsData';
 import ProjectRow from './ProjectRow';
 import Reveal from './Reveal';
@@ -18,12 +17,6 @@ export default function WorkSection() {
             front end to full-stack apps with auth, real-time data and a
             database.
           </p>
-          <Link
-            href="/skills"
-            className="inline-flex items-center gap-2 font-display font-medium text-[15px] text-lime transition-[gap] duration-[250ms] hover:gap-[14px] focus-visible:gap-[14px]"
-          >
-            All case studies <span aria-hidden="true">→</span>
-          </Link>
         </div>
       </Reveal>
 

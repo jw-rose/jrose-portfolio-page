@@ -7,17 +7,6 @@ import type {
   EvidenceProject,
 } from '@/types/cv';
 
-function slugify(title: string) {
-  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
-
-/**
- * Project titles come from lib/projectsData.ts so these stay valid if a
- * title there ever changes; the anchors themselves don't exist on
- * /skills yet (no case-study route/sections there today).
- */
-const caseStudyHref = (title: string) => `/skills#${slugify(title)}`;
-
 const projectByTitle = (title: string) => {
   const project = projects.find((p) => p.title === title);
   if (!project) throw new Error(`cvData: unknown project "${title}"`);
@@ -25,10 +14,10 @@ const projectByTitle = (title: string) => {
 };
 
 function caseStudyEvidence(title: string): EvidenceProject {
-  projectByTitle(title);
+  const project = projectByTitle(title);
   return {
     project: title,
-    links: [{ label: 'Case study', href: caseStudyHref(title) }],
+    links: [{ label: 'Live demo', href: project.liveUrl }],
   };
 }
 

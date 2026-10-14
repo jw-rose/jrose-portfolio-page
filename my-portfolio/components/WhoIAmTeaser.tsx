@@ -17,10 +17,10 @@ export default function WhoIAmTeaser() {
           leadership and curiosity to code.
         </p>
         <Link
-          href="/experience"
+          href="/cv"
           className="font-mono text-xs uppercase tracking-wider text-lime hover:text-paper transition-colors inline-flex items-center gap-1"
         >
-          My experience <span aria-hidden="true">→</span>
+          My CV <span aria-hidden="true">→</span>
         </Link>
       </Reveal>
     </section>
