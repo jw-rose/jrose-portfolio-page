@@ -4,18 +4,21 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaBars, FaTimes, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useEffect, useRef, useState } from 'react';
-
-const navItems = [
-  { name: 'Portfolio', path: '/' },
-  { name: 'CV / Résumé', path: '/cv' },
-  { name: 'Contact', path: '/contact' },
-];
+import { useLanguage } from './LanguageProvider';
+import LanguageToggle from './LanguageToggle';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLButtonElement>(null);
+
+  const navItems = [
+    { name: t.nav.portfolio, path: '/' },
+    { name: t.nav.cv, path: '/cv' },
+    { name: t.nav.contact, path: '/contact' },
+  ];
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -61,7 +64,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-ink/95 backdrop-blur-md">
       <nav
-        aria-label="Primary"
+        aria-label={t.nav.primaryLabel}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-20"
       >
         <Link
@@ -90,12 +93,13 @@ export default function Navbar() {
           })}
         </div>
 
-        <div className="hidden md:flex items-center">
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageToggle />
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-sm font-medium text-ink transition-all hover:gap-3 focus-visible:gap-3"
           >
-            Let&apos;s talk <span aria-hidden="true">→</span>
+            {t.nav.letsTalk} <span aria-hidden="true">→</span>
           </Link>
         </div>
 
@@ -105,7 +109,7 @@ export default function Navbar() {
           type="button"
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
           onClick={() => setMenuOpen((open) => !open)}
           className="md:hidden flex items-center justify-center w-11 h-11 text-paper"
         >
@@ -120,10 +124,11 @@ export default function Navbar() {
           ref={menuRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Mobile navigation"
+          aria-label={t.nav.mobileNavLabel}
           className="md:hidden fixed inset-0 top-16 sm:top-20 z-40 bg-ink flex flex-col justify-between overflow-y-auto"
         >
           <div className="flex flex-col px-6 py-8 gap-6">
+            <LanguageToggle className="self-start" />
             {navItems.map((item) => {
               const isActive = pathname === item.path;
               return (
@@ -145,7 +150,7 @@ export default function Navbar() {
               onClick={closeMenu}
               className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-lime px-5 py-3 min-h-[44px] text-sm font-medium text-ink"
             >
-              Let&apos;s talk <span aria-hidden="true">→</span>
+              {t.nav.letsTalk} <span aria-hidden="true">→</span>
             </Link>
           </div>
 
@@ -157,7 +162,7 @@ export default function Navbar() {
               onClick={closeMenu}
               className="inline-flex items-center gap-2 text-muted hover:text-paper text-sm min-h-[44px]"
             >
-              <FaGithub className="text-lg" /> GitHub <span aria-hidden="true">↗</span>
+              <FaGithub className="text-lg" /> {t.nav.github} <span aria-hidden="true">↗</span>
             </a>
             <a
               href="https://www.linkedin.com/in/josh-rose-4b715b32/"
@@ -166,7 +171,7 @@ export default function Navbar() {
               onClick={closeMenu}
               className="inline-flex items-center gap-2 text-muted hover:text-paper text-sm min-h-[44px]"
             >
-              <FaLinkedin className="text-lg" /> LinkedIn <span aria-hidden="true">↗</span>
+              <FaLinkedin className="text-lg" /> {t.nav.linkedin} <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
