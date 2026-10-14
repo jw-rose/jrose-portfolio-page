@@ -132,7 +132,7 @@ export const en = {
     heading: 'More than a job title',
     paragraph: 'A snapshot of the experience, skills, and perspective I bring to the work.',
     downloadCv: 'Download CV',
-    downloadCvSub: 'PDF · FR ↓',
+    downloadCvSub: 'PDF · EN ↓',
     print: 'Print / Save as PDF',
     printShortcutHint: '⌘P / Ctrl+P',
 

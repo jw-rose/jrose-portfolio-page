@@ -35,6 +35,7 @@ export default function Footer() {
           </a>
           <a
             href="https://www.devjrose.com/CV-Joshua-Rose-FR.pdf"
+            href="https://www.devjrose.com/images/CV-Dev-Ops-Joshua-Rose.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="min-h-[44px] inline-flex items-center text-lime hover:text-paper transition-colors"

@@ -136,7 +136,6 @@ export const fr: Dictionary = {
     heading: 'Plus qu’un intitulé de poste',
     paragraph: 'Un aperçu de l’expérience, des compétences et de la perspective que j’apporte au travail.',
     downloadCv: 'Télécharger le CV',
-    downloadCvSub: 'PDF · FR ↓',
     print: 'Imprimer / Enregistrer en PDF',
     printShortcutHint: '⌘P / Ctrl+P',
 
