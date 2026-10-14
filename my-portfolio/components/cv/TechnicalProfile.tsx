@@ -1,22 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { skillGroups, skillEvidence, defaultSkill } from '@/lib/cvData';
+import { skillGroupsStructure, skillEvidence, defaultSkill } from '@/lib/cvData';
+import { useLanguage } from '../LanguageProvider';
 
 export default function TechnicalProfile() {
+  const { t } = useLanguage();
   const [selectedSkill, setSelectedSkill] = useState<string>(defaultSkill);
 
   const evidence = skillEvidence[selectedSkill] ?? [];
 
   return (
     <div>
-      <p className="text-sm text-muted mb-6">Select a skill to see the projects that prove it.</p>
+      <p className="text-sm text-muted mb-6">{t.cvPage.technicalProfileHint}</p>
 
       <div className="flex flex-col gap-6 mb-8">
-        {skillGroups.map((group) => (
+        {skillGroupsStructure.map((group) => (
           <div key={group.id}>
             <p className="font-mono text-xs uppercase tracking-wider text-muted2 mb-3">
-              {group.label}
+              {t.cvPage.skillGroups[group.id]}
             </p>
             <div className="flex flex-wrap gap-2.5">
               {group.skills.map((skill) =>
@@ -53,32 +55,38 @@ export default function TechnicalProfile() {
         className="border border-hairline rounded-[20px] p-6 sm:p-8 bg-[#181818]"
       >
         <p className="font-display font-medium text-lg text-paper mb-4">
-          Evidence for {selectedSkill}
+          {t.cvPage.evidenceForPrefix} {selectedSkill}
         </p>
         {evidence.length > 0 ? (
           <ul className="flex flex-col gap-3">
             {evidence.map((project) => (
               <li key={project.project} className="flex flex-wrap items-baseline gap-3">
                 <span className="text-[17px] text-body">{project.project}</span>
-                {project.links.map((link) => {
-                  const isExternal = !link.href.startsWith('/');
-                  return (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className="inline-flex items-center gap-1 font-display text-sm text-lime hover:text-paper transition-colors"
-                    >
-                      {link.label}{' '}
-                      <span aria-hidden="true">{isExternal ? '↗' : '→'}</span>
-                    </a>
-                  );
-                })}
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-display text-sm text-lime hover:text-paper transition-colors"
+                  >
+                    {t.work.liveDemo} <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-display text-sm text-lime hover:text-paper transition-colors"
+                  >
+                    {t.work.github} <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-muted">No project linked on this site yet.</p>
+          <p className="text-sm text-muted">{t.cvPage.noProjectLinked}</p>
         )}
       </div>
     </div>
