@@ -10,6 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        ink: '#101010',
+        paper: '#F5F5F0',
+        muted: '#A3A39C',
+        muted2: '#8C8C86',
+        body: '#C9C9C2',
+        lime: '#C7FF65',
+        hairline: 'rgba(245,245,240,0.10)',
         primary: {
           50: '#f0fdfc',
           100: '#ccfbf7',
@@ -35,6 +42,14 @@ const config: Config = {
       },
       backdropBlur: {
         xs: '2px',
+      },
+      fontFamily: {
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
+        mono: ['var(--font-mono)'],
+      },
+      borderRadius: {
+        arch: '28px',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
