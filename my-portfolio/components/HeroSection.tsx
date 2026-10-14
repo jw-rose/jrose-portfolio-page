@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import Reveal from './Reveal';
 
@@ -49,10 +50,15 @@ export default function HeroSection() {
             className="absolute inset-0 translate-x-3 translate-y-3 rounded-t-full rounded-b-arch border border-lime/60"
             aria-hidden="true"
           />
-          <div className="relative aspect-[4/5.2] rounded-t-full rounded-b-arch overflow-hidden border border-hairline bg-gradient-dark flex items-center justify-center">
-            <span className="font-mono text-xs uppercase tracking-wider text-muted2 text-center px-6">
-              Portrait placeholder — add real photo
-            </span>
+          <div className="relative aspect-[4/5.2] rounded-t-full rounded-b-arch overflow-hidden border border-hairline bg-gradient-dark">
+            <Image
+              src="/images/profilePic.png"
+              alt="Joshua Rose"
+              fill
+              sizes="(min-width: 1024px) 384px, 90vw"
+              className="object-cover"
+              priority
+            />
             <span className="absolute bottom-4 left-4 font-mono text-xs bg-ink/80 backdrop-blur-sm border border-hairline rounded-full px-3 py-1.5 text-paper">
               Joshua Rose
             </span>
