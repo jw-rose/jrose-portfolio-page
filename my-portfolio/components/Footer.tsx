@@ -34,7 +34,7 @@ export default function Footer() {
             {t.footer.linkedin} <span aria-hidden="true" className="ml-1">↗</span>
           </a>
           <a
-            href="https://www.devjrose.com/CV-Joshua-Rose-FR.pdf"
+            href="https://www.devjrose.com/CV-Dev-Ops-Joshua-Rose.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="min-h-[44px] inline-flex items-center text-lime hover:text-paper transition-colors"

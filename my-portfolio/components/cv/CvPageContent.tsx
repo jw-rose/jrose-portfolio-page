@@ -28,7 +28,7 @@ export default function CvPageContent() {
 
         <div className="flex flex-wrap gap-4 print:hidden">
           <a
-            href="/CV-Joshua-Rose-FR.pdf"
+            href="/CV-Dev-Ops-Joshua-Rose.pdf"
             download
             className="inline-flex flex-col items-start gap-0.5 rounded-full bg-lime px-6 py-2.5 min-h-[44px] text-ink transition-all"
           >
