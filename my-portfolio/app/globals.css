@@ -27,6 +27,21 @@
     opacity: 0;
     transform: translateY(16px);
   }
+
+  .hero-text-col {
+    container-type: inline-size;
+  }
+
+  /*
+   * cqw factor (16.5) is tuned against "experiences." — the longest of the
+   * three headline lines once rendered at -0.055em letter-spacing — so it
+   * fills its column with a safety margin at every width, never overflowing.
+   */
+  .hero-heading {
+    font-size: clamp(2.25rem, 16.5cqw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -5,21 +5,18 @@ export default function HeroSection() {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-24 pb-16 sm:pb-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <Reveal>
+        <Reveal className="hero-text-col">
           <p className="font-mono uppercase text-xs sm:text-sm tracking-wider text-muted2 flex items-center gap-2 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-lime" aria-hidden="true" />
             Full stack developer · France
           </p>
 
-          <h1
-            className="font-display font-semibold tracking-tight text-paper mb-6 break-words"
-            style={{ fontSize: 'clamp(3.25rem, 9vw, 9.125rem)', lineHeight: 0.9 }}
-          >
-            <span className="block">
-              I&apos;m J.ROSE<span className="text-lime">.</span>
-            </span>
-            <span className="block text-muted">I build digital</span>
-            <span className="block">
+          <h1 className="hero-heading font-display font-semibold text-paper mb-6">
+            <span className="block whitespace-nowrap">
+              I&apos;m Josh<span className="text-lime">.</span>
+            </span>{' '}
+            <span className="block whitespace-nowrap text-muted">I build digital</span>{' '}
+            <span className="block whitespace-nowrap">
               experiences<span className="text-lime">.</span>
             </span>
           </h1>
