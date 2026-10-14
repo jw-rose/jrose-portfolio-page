@@ -1,125 +1,78 @@
+import type { Metadata } from 'next';
 import ContactForm from '@/components/ContactForm';
-import Link from 'next/link';
-import { FaLinkedin, FaGithub, FaEnvelope, FaMapMarkerAlt, FaClock, FaFileDownload } from 'react-icons/fa';
+import Reveal from '@/components/Reveal';
+import { CONTACT_EMAIL, GITHUB_HANDLE, GITHUB_URL, LINKEDIN_HANDLE, LINKEDIN_URL } from '@/lib/contactConfig';
+
+export const metadata: Metadata = {
+  title: 'Contact — Joshua Rose',
+  description:
+    "Get in touch with Joshua Rose about products, projects, or opportunities to build together.",
+};
+
+const elsewhere = [
+  { label: 'GitHub', handle: GITHUB_HANDLE, href: GITHUB_URL },
+  { label: 'LinkedIn', handle: LINKEDIN_HANDLE, href: LINKEDIN_URL },
+];
 
 export default function ContactPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <div className="text-center mb-12 sm:mb-16">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium text-gray-900 dark:text-white mb-4">
-          Let's work together
-        </h1>
-        <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto px-4">
-          Have a project in mind? I'd love to hear about it. Get in touch and let's make it happen.
-        </p>
-      </div>
+    <div className="bg-ink text-paper">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24 flex flex-col gap-[clamp(48px,6vw,96px)]">
+        <Reveal className="contact-heading-col flex flex-col gap-7">
+          <p className="font-mono uppercase text-xs tracking-[0.06em] text-muted2">Contact</p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-        <div className="lg:col-span-2">
-          <ContactForm />
-        </div>
+          <h1 className="contact-heading font-display font-semibold text-paper">
+            Have something good in mind<span className="text-lime">?</span>
+          </h1>
 
-        <div className="space-y-4 sm:space-y-5">
-          {/* Contact info cards */}
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-5 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#06B6D4]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FaEnvelope className="text-[#06B6D4] text-xl" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-gray-600 dark:text-gray-400 text-xs mb-1">Email</div>
-                <div className="text-gray-900 dark:text-white text-sm font-medium truncate">
-                  josh@devjrose.com
-                </div>
-              </div>
-            </div>
+          <p className="font-body text-body text-[clamp(17px,1.4vw,20px)] leading-[1.55] max-w-[560px]">
+            I&apos;m always interested in connecting around thoughtful products, interesting
+            challenges, and opportunities to build.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="inline-flex items-center gap-3 hover:gap-5 focus-visible:gap-5 transition-all h-[60px] px-[30px] rounded-full bg-lime font-display font-semibold text-[17px] text-ink"
+            >
+              Email me <span aria-hidden="true">→</span>
+            </a>
+            <span className="font-mono text-[13px] text-lime border border-dashed border-[rgba(199,255,101,0.45)] rounded-[6px] px-3 py-[6px]">
+              {CONTACT_EMAIL}
+            </span>
           </div>
+        </Reveal>
 
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-5 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#06B6D4]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FaLinkedin className="text-[#06B6D4] text-xl" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-gray-600 dark:text-gray-400 text-xs mb-1">LinkedIn</div>
-                <Link
-                  href="https://www.linkedin.com/in/josh-rose-4b715b32/"
+        <Reveal className="flex flex-wrap gap-[clamp(40px,6vw,96px)]">
+          <div className="flex-1 basis-[360px]">
+            <p className="font-mono uppercase text-[11px] tracking-[0.06em] text-muted2 mb-3">
+              Elsewhere
+            </p>
+            <div>
+              {elsewhere.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
                   target="_blank"
-                  className="text-[#06B6D4] text-sm font-medium hover:text-[#0891b2] transition-colors truncate block"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between gap-4 py-[22px] border-t border-[rgba(245,245,240,0.12)] transition-[padding] duration-300 hover:pl-3 focus-visible:pl-3"
                 >
-                  linkedin.com/in/josh-rose
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-5 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#06B6D4]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FaFileDownload className="text-[#06B6D4] text-xl" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-gray-600 dark:text-gray-400 text-xs mb-2">Resume</div>
-                <a 
-                  href="/CV-Joshua-Rose-FR.pdf"
-                  download
-                  className="block bg-[#06B6D4]/20 text-[#06B6D4] border border-[#06B6D4]/30 px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#06B6D4]/30 transition-colors text-center"
-                >
-                  Download CV
+                  <span className="font-display font-medium text-[clamp(26px,2.6vw,38px)] tracking-[-0.03em] text-paper transition-colors duration-300 group-hover:text-lime group-focus-visible:text-lime">
+                    {item.label}
+                  </span>
+                  <span className="font-mono text-[13px] text-muted2 whitespace-nowrap">
+                    {item.handle} <span aria-hidden="true">↗</span>
+                  </span>
                 </a>
-              </div>
+              ))}
+              <div className="border-t border-[rgba(245,245,240,0.12)]" />
             </div>
           </div>
 
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-5 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#06B6D4]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FaMapMarkerAlt className="text-[#06B6D4] text-xl" />
-              </div>
-              <div>
-                <div className="text-gray-600 dark:text-gray-400 text-xs mb-1">Location</div>
-                <div className="text-gray-900 dark:text-white text-sm font-medium">
-                  Saint-Denis, France
-                </div>
-              </div>
-            </div>
+          <div className="flex-1 basis-[420px]">
+            <ContactForm />
           </div>
-
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-xl p-5 sm:p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FaClock className="text-green-600 dark:text-green-400 text-xl" />
-              </div>
-              <div>
-                <div className="text-gray-600 dark:text-gray-400 text-xs mb-1">Availability</div>
-                <div className="text-green-600 dark:text-green-400 text-sm font-medium">
-                  Open to work
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Social Links */}
-      <div className="text-center mt-12 sm:mt-16">
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">Connect with me</p>
-        <div className="flex justify-center gap-6">
-          <Link
-            href="https://www.linkedin.com/in/josh-rose-4b715b32/"
-            target="_blank"
-            className="w-12 h-12 bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-[#06B6D4] hover:border-[#06B6D4]/50 transition-all"
-          >
-            <FaLinkedin className="text-2xl" />
-          </Link>
-          <Link
-            href="https://github.com/jw-rose"
-            target="_blank"
-            className="w-12 h-12 bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-[#06B6D4] hover:border-[#06B6D4]/50 transition-all"
-          >
-            <FaGithub className="text-2xl" />
-          </Link>
-        </div>
+        </Reveal>
       </div>
     </div>
   );

@@ -42,6 +42,22 @@
     line-height: 0.9;
     letter-spacing: -0.055em;
   }
+
+  .contact-heading-col {
+    container-type: inline-size;
+  }
+
+  /*
+   * cqw factor (18) is tuned against "something" — the longest word in
+   * "Have something good in mind?" at -0.06em letter-spacing — so it fills
+   * its (full-width, unsplit) column with a safety margin, never breaking
+   * mid-word down to 320px.
+   */
+  .contact-heading {
+    font-size: clamp(52px, 18cqw, 168px);
+    line-height: 0.88;
+    letter-spacing: -0.06em;
+  }
 }
 
 /*
