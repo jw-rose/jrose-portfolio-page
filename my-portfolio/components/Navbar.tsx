@@ -2,111 +2,177 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaDownload, FaBars, FaTimes } from 'react-icons/fa';
-import ThemeToggle from './ThemeToggle';
-import { useState } from 'react';
+import { FaBars, FaTimes, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
+
+const navItems = [
+  { name: 'Portfolio', path: '/' },
+  { name: 'CV / Résumé', path: '/cv' },
+  { name: 'Creation / Skill', path: '/skills' },
+  { name: 'Experience', path: '/experience' },
+  { name: 'Contact', path: '/contact' },
+];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Skills', path: '/skills' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const menu = menuRef.current;
+    const focusableElements = menu?.querySelectorAll<HTMLElement>(
+      'a, button'
+    );
+    const first = focusableElements?.[0];
+    const last = focusableElements?.[focusableElements.length - 1];
+    first?.focus();
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+        toggleButtonRef.current?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab' && first && last) {
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className="bg-white/50 dark:bg-white/5 backdrop-blur-md border-b border-gray-200 dark:border-white/10 sticky top-0 z-50 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          
-          {/* Logo */}
-          <Link 
-            href="/" 
-            className="text-[#06B6D4] font-medium text-lg hover:text-[#0891b2] transition-colors"
-          >
-            Devjrose
-          </Link>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            {navItems.map((item) => (
+    <header className="sticky top-0 z-50 border-b border-hairline bg-ink/95 backdrop-blur-md">
+      <nav
+        aria-label="Primary"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-20"
+      >
+        <Link
+          href="/"
+          className="font-display font-semibold text-lg sm:text-xl tracking-tight text-paper"
+        >
+          J<span className="text-lime">.</span>ROSE
+        </Link>
+
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => {
+            const isActive = pathname === item.path;
+            return (
               <Link
                 key={item.path}
                 href={item.path}
-                className={`text-sm transition-colors ${
-                  pathname === item.path
-                    ? 'text-gray-900 dark:text-[#F1F5F9] opacity-90'
-                    : 'text-gray-600 dark:text-[#94A3B8] hover:text-gray-900 dark:hover:text-[#F1F5F9]'
+                aria-current={isActive ? 'page' : undefined}
+                className={`font-body text-sm transition-colors ${
+                  isActive ? 'text-paper' : 'text-muted hover:text-paper'
                 }`}
               >
                 {item.name}
               </Link>
-            ))}
-
-            <ThemeToggle />
-
-            {/* FIXED: Added <a> */}
-            <a
-              href="/CV-Joshua-Rose-FR.pdf"
-              download
-              className="bg-[#06B6D4] text-white dark:text-[#0F172A] px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#0891b2] transition-colors flex items-center gap-2"
-            >
-              <FaDownload className="text-xs" />
-              Download CV
-            </a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-4">
-            <ThemeToggle />
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-900 dark:text-white p-2"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <FaTimes className="text-xl" />
-              ) : (
-                <FaBars className="text-xl" />
-              )}
-            </button>
-          </div>
+            );
+          })}
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden pb-4">
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
+        <div className="hidden md:flex items-center">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-sm font-medium text-ink transition-all hover:gap-3 focus-visible:gap-3"
+          >
+            Let&apos;s talk <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+
+        {/* Mobile menu button */}
+        <button
+          ref={toggleButtonRef}
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          onClick={() => setMenuOpen((open) => !open)}
+          className="md:hidden flex items-center justify-center w-11 h-11 text-paper"
+        >
+          {menuOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
+        </button>
+      </nav>
+
+      {/* Mobile overlay menu */}
+      {menuOpen && (
+        <div
+          id="mobile-menu"
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          className="md:hidden fixed inset-0 top-16 sm:top-20 z-40 bg-ink flex flex-col justify-between overflow-y-auto"
+        >
+          <div className="flex flex-col px-6 py-8 gap-6">
+            {navItems.map((item) => {
+              const isActive = pathname === item.path;
+              return (
                 <Link
                   key={item.path}
                   href={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`text-sm transition-colors py-2 ${
-                    pathname === item.path
-                      ? 'text-gray-900 dark:text-[#F1F5F9] opacity-90'
-                      : 'text-gray-600 dark:text-[#94A3B8]'
+                  onClick={closeMenu}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`font-display text-2xl py-2 min-h-[44px] flex items-center ${
+                    isActive ? 'text-paper' : 'text-muted hover:text-paper'
                   }`}
                 >
                   {item.name}
                 </Link>
-              ))}
-              
-              {/* FIXED: Added <a> */}
-              <a
-                href="/CV-Joshua-Rose-FR.pdf"
-                download
-                className="bg-[#06B6D4] text-white dark:text-[#0F172A] px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#0891b2] transition-colors flex items-center justify-center gap-2 w-full"
-              >
-                <FaDownload className="text-xs" />
-                Download CV
-              </a>
-            </div>
+              );
+            })}
+            <Link
+              href="/contact"
+              onClick={closeMenu}
+              className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-lime px-5 py-3 min-h-[44px] text-sm font-medium text-ink"
+            >
+              Let&apos;s talk <span aria-hidden="true">→</span>
+            </Link>
           </div>
-        )}
-      </div>
-    </nav>
+
+          <div className="flex items-center gap-6 px-6 py-8 border-t border-hairline">
+            <a
+              href="https://github.com/jw-rose"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMenu}
+              className="inline-flex items-center gap-2 text-muted hover:text-paper text-sm min-h-[44px]"
+            >
+              <FaGithub className="text-lg" /> GitHub <span aria-hidden="true">↗</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/josh-rose-4b715b32/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMenu}
+              className="inline-flex items-center gap-2 text-muted hover:text-paper text-sm min-h-[44px]"
+            >
+              <FaLinkedin className="text-lg" /> LinkedIn <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
