@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function CvPage() {
   return (
-    <div className="bg-ink text-paper">
+    <div className="cv-print-page bg-ink text-paper">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-24 pb-16 sm:pb-20">
         <p className="font-mono uppercase text-xs sm:text-sm tracking-wider text-muted2 flex items-center gap-2 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-lime" aria-hidden="true" />

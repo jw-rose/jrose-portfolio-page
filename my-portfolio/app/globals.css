@@ -44,6 +44,39 @@
   }
 }
 
+/*
+ * Scoped to the CV page via the .cv-print-page marker so printing other
+ * routes (which carry no such marker) is unaffected.
+ */
+@media print {
+  body:has(.cv-print-page) > header,
+  body:has(.cv-print-page) > footer,
+  body:has(.cv-print-page) > a[href='#main-content'] {
+    display: none !important;
+  }
+
+  .cv-print-page {
+    background: #ffffff !important;
+    color: #101010 !important;
+  }
+
+  .cv-print-page * {
+    background: transparent !important;
+    color: inherit !important;
+    border-color: #ccc !important;
+  }
+
+  .cv-accordion-content {
+    grid-template-rows: 1fr !important;
+  }
+
+  .cv-print-page a[target='_blank']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.75em;
+    word-break: break-all;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

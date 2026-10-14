@@ -32,7 +32,10 @@ function AccordionPanel({
   const panelId = `timeline-${entry.id}-panel`;
 
   return (
-    <div id={`timeline-${entry.id}`} className="border-t border-hairline">
+    <div
+      id={`timeline-${entry.id}`}
+      className="border-t border-hairline print:break-inside-avoid"
+    >
       <button
         type="button"
         id={headerId}
@@ -52,7 +55,7 @@ function AccordionPanel({
         </span>
         <span
           aria-hidden="true"
-          className={`flex-none font-mono text-2xl text-muted2 transition-transform duration-300 ${
+          className={`flex-none font-mono text-2xl text-muted2 transition-transform duration-300 print:hidden ${
             isOpen ? 'rotate-45' : ''
           }`}
         >
