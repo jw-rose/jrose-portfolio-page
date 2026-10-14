@@ -66,9 +66,9 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          className="font-display font-semibold text-lg sm:text-xl tracking-tight text-paper"
+          className="font-display font-semibold text-lg sm:text-xl tracking-tight text-paper whitespace-nowrap"
         >
-          J<span className="text-lime">.</span>ROSE
+          Dev J<span className="text-lime">.</span>Rose
         </Link>
 
         {/* Desktop nav */}
